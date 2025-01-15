@@ -10,7 +10,7 @@ function App() {
     e.preventDefault();
     try {
 
-      const response = await axios.post("http://127.0.0.1:8000/reescribir", {
+      const response = await axios.post("https://redaction-ai.onrender.com/reescribir", {
         texto: texto,   // Este es el nombre correcto del campo
         estilo: estilo
       });
