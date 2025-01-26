@@ -11,7 +11,7 @@ function App() {
     try {
 
       const response = await axios.post("https://redaction-ai.onrender.com/reescribir", {
-        texto: texto,   // Este es el nombre correcto del campo
+        texto: texto,
         estilo: estilo
       });
 
@@ -29,20 +29,21 @@ function App() {
 
   return (
     <div>
-      <h1 className="title text-center">Reescribir Artículos</h1>
+      <h1 className="title text-center font-sans mt-10">Reescribir Artículos</h1>
       <form onSubmit={manejarEnvio}>
-        <div>
+        <div className="">
           <label className="text-xl">Texto original:</label>
-          <textarea className="texto"
+          <textarea className="texto rounded-lg p-5 bg-gray-400"
             value={texto}
             onChange={(e) => setTexto(e.target.value)}
             rows={10}
             cols={50}
           />
         </div>
-        <div>
+        <div className="flex flex-col mt-5">
           <label>Estilo deseado:</label>
           <input
+            className="bg-gray-400 p-2 rounded-lg"
             type="text"
             value={estilo}
             onChange={(e) => setEstilo(e.target.value)}
@@ -53,7 +54,16 @@ function App() {
       {resultado && (
         <div className="w-2/4 mx-auto mt-5">
           <h2 className="text-center text-xl">Texto Reescrito:</h2>
-          <p className="mx-0">{resultado}</p>
+          <p className="mx-0 border border-gray-500 p-4 rounded-lg">
+            {resultado.split('.').map((frase, index) => (
+              frase.trim() && (
+                <span key={index}>
+                  {frase.trim()}.
+                  <br />
+                </span>
+              )
+            ))}
+          </p>
         </div>
       )}
     </div>

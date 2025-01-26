@@ -4,6 +4,7 @@
 
 .title {
   text-align: center;
+  font-family: "Roboto", sans-serif;
 }
 .texto {
   width: 100%;
@@ -31,7 +32,6 @@ body {
   margin: 0;
   display: flex;
   justify-content: center;
-  background: grey;
 }
 
 h1 {
