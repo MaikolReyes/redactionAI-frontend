@@ -3,7 +3,6 @@ import axios from "axios";
 
 function App() {
   const [texto, setTexto] = useState("");
-  const [estilo, setEstilo] = useState("");
   const [resultado, setResultado] = useState("");
 
   const manejarEnvio = async (e: React.FormEvent) => {
@@ -12,7 +11,6 @@ function App() {
 
       const response = await axios.post("https://redaction-ai.onrender.com/reescribir", {
         texto: texto,
-        estilo: estilo
       });
 
       // Verificamos si el campo "resultado" está presente en la respuesta
@@ -38,15 +36,6 @@ function App() {
             onChange={(e) => setTexto(e.target.value)}
             rows={10}
             cols={50}
-          />
-        </div>
-        <div className="flex flex-col mt-5">
-          <label>Estilo deseado:</label>
-          <input
-            className="bg-gray-400 p-2 rounded-lg"
-            type="text"
-            value={estilo}
-            onChange={(e) => setEstilo(e.target.value)}
           />
         </div>
         <button className="mt-5 text-white" type="submit">Reescribir</button>
