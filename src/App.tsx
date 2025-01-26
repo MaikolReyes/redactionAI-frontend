@@ -44,14 +44,7 @@ function App() {
         <div className="w-2/4 mx-auto mt-5">
           <h2 className="text-center text-xl">Texto Reescrito:</h2>
           <p className="mx-0 border border-gray-500 p-4 rounded-lg">
-            {resultado.split('.').map((frase, index) => (
-              frase.trim() && (
-                <span key={index}>
-                  {frase.trim()}.
-                  <br />
-                </span>
-              )
-            ))}
+            {resultado}
           </p>
         </div>
       )}
