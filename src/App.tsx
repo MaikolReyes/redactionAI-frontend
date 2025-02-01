@@ -5,7 +5,17 @@ function App() {
   const [texto, setTexto] = useState("");
   const [resultado, setResultado] = useState("");
 
+  const [loading, setLoading] = useState(false);
+
+  const manejarReset = () => {
+    setLoading(true);
+    setTexto(""); // Resetea el texto
+    setTimeout(() => setLoading(false), 500); // Simulación de tiempo de espera
+  };
+
   const manejarEnvio = async (e: React.FormEvent) => {
+
+
     e.preventDefault();
     try {
 
@@ -38,20 +48,22 @@ function App() {
             cols={50}
           />
         </div>
-        <button className="mt-5 text-white" type="submit">Reescribir</button>
+
+        <div className="flex gap-5">
+          <button className="mt-5 text-white" type="submit">Reescribir</button>
+
+          <button disabled={loading} className={`mt-5 px-4 py-2 rounded-lg ${loading
+            ? "bg-gray-500 cursor-not-allowed"
+            : "bg-dark text-white"
+            }`} onClick={manejarReset}>Reset</button>
+        </div>
+
       </form>
       {resultado && (
         <div className="w-2/4 mx-auto p-5">
           <h2 className="text-center text-xl">Texto Reescrito:</h2>
           <p className="mx-0 border border-gray-500 p-4 rounded-lg">
-            {resultado.split('.').map((frase, index) => (
-              frase.trim() && (
-                <span key={index}>
-                  {frase.trim()}.
-                  <br />
-                </span>
-              )
-            ))}
+            {resultado}
           </p>
         </div>
       )}
