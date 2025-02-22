@@ -72,7 +72,7 @@ function App() {
           </p>
         </div>
         <div className="w-2/4 mx-auto p-5">
-          <h2 className="text-center text-xl">Texto Reescrito:</h2>
+          <h2 className="text-center text-xl">Text Rewrite in english:</h2>
           <p className="mx-0 border border-gray-500 p-4 rounded-lg">
             {resultadoEN}
           </p>
