@@ -3,7 +3,9 @@ import axios from "axios";
 
 function App() {
   const [texto, setTexto] = useState("");
-  const [resultado, setResultado] = useState("");
+  const [resultadoES, setResultadoES] = useState("");
+  const [resultadoEN, setResultadoEN] = useState("");
+
 
   const [loading, setLoading] = useState(false);
 
@@ -25,7 +27,8 @@ function App() {
 
       // Verificamos si el campo "resultado" está presente en la respuesta
       if (response.data.resultado) {
-        setResultado(response.data.resultado); // Asignamos el texto reescrito
+        setResultadoES(response.data.resultado_es);
+        setResultadoEN(response.data.resultado_en); // Asignamos el texto reescrito // Asignamos el texto reescrito
       } else {
         console.error("Error en la API:", response.data.error || "Respuesta inesperada");
       }
@@ -59,23 +62,23 @@ function App() {
         </div>
 
       </form>
-      {resultado && (
-        <div>
 
-          <div className="w-2/4 mx-auto p-5">
-            <h2 className="text-center text-xl">Texto Reescrito:</h2>
-            <p className="mx-0 border border-gray-500 p-4 rounded-lg">
-              {resultado}
-            </p>
-          </div>
-          <div className="w-2/4 mx-auto p-5">
-            <h2 className="text-center text-xl">Texto Reescrito:</h2>
-            <p className="mx-0 border border-gray-500 p-4 rounded-lg">
-              {`${resultado} en ingles`}
-            </p>
-          </div>
+      <div className="flex gap-5">
+
+        <div className="w-2/4 mx-auto p-5">
+          <h2 className="text-center text-xl">Texto Reescrito:</h2>
+          <p className="mx-0 border border-gray-500 p-4 rounded-lg">
+            {resultadoES}
+          </p>
         </div>
-      )}
+        <div className="w-2/4 mx-auto p-5">
+          <h2 className="text-center text-xl">Texto Reescrito:</h2>
+          <p className="mx-0 border border-gray-500 p-4 rounded-lg">
+            {resultadoEN}
+          </p>
+        </div>
+      </div>
+
     </div>
   );
 }
