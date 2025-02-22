@@ -19,7 +19,7 @@ function App() {
     e.preventDefault();
     try {
 
-      const response = await axios.post("https://redaction-ai.onrender.com/reescribir", {
+      const response = await axios.post("https://redactor-ai.onrender.com/reescribir", {
         texto: texto,
       });
 
