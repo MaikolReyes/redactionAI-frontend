@@ -60,11 +60,20 @@ function App() {
 
       </form>
       {resultado && (
-        <div className="w-2/4 mx-auto p-5">
-          <h2 className="text-center text-xl">Texto Reescrito:</h2>
-          <p className="mx-0 border border-gray-500 p-4 rounded-lg">
-            {resultado}
-          </p>
+        <div>
+
+          <div className="w-2/4 mx-auto p-5">
+            <h2 className="text-center text-xl">Texto Reescrito:</h2>
+            <p className="mx-0 border border-gray-500 p-4 rounded-lg">
+              {resultado}
+            </p>
+          </div>
+          <div className="w-2/4 mx-auto p-5">
+            <h2 className="text-center text-xl">Texto Reescrito:</h2>
+            <p className="mx-0 border border-gray-500 p-4 rounded-lg">
+              {`${resultado} en ingles`}
+            </p>
+          </div>
         </div>
       )}
     </div>
