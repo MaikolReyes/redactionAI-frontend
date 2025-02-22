@@ -28,7 +28,7 @@ function App() {
       // Verificamos si el campo "resultado" está presente en la respuesta
       if (response.data.resultado_es && response.data.resultado_en) {
         setResultadoES(response.data.resultado_es);
-        setResultadoEN(response.data.resultado_en); // Asignamos el texto reescrito // Asignamos el texto reescrito
+        setResultadoEN(response.data.resultado_en);
       } else {
         console.error("Error en la API:", response.data.error || "Respuesta inesperada");
       }
