@@ -3,20 +3,18 @@ import axios from "axios";
 
 function App() {
   const [texto, setTexto] = useState("");
-  const [resultadoES, setResultadoES] = useState("");
-  const [resultadoEN, setResultadoEN] = useState("");
-
+  const [resultado, setResultado] = useState("");
 
   const [loading, setLoading] = useState(false);
 
   const manejarReset = () => {
     setLoading(true);
-    setTexto(""); // Resetea el texto
+    setTexto("");
+    setResultado("")// Resetea el texto
     setTimeout(() => setLoading(false), 500); // Simulación de tiempo de espera
   };
 
   const manejarEnvio = async (e: React.FormEvent) => {
-
 
     e.preventDefault();
     try {
@@ -26,9 +24,8 @@ function App() {
       });
 
       // Verificamos si el campo "resultado" está presente en la respuesta
-      if (response.data.resultado_es && response.data.resultado_en) {
-        setResultadoES(response.data.resultado_es);
-        setResultadoEN(response.data.resultado_en);
+      if (response.data.resultado) {
+        setResultado(response.data.resultado);
       } else {
         console.error("Error en la API:", response.data.error || "Respuesta inesperada");
       }
@@ -68,13 +65,7 @@ function App() {
         <div className="w-2/4 mx-auto p-5">
           <h2 className="text-center text-xl">Texto Reescrito:</h2>
           <p className="mx-0 border border-gray-500 p-4 rounded-lg">
-            {resultadoES}
-          </p>
-        </div>
-        <div className="w-2/4 mx-auto p-5">
-          <h2 className="text-center text-xl">Text Rewrite in english:</h2>
-          <p className="mx-0 border border-gray-500 p-4 rounded-lg">
-            {resultadoEN}
+            {resultado}
           </p>
         </div>
       </div>
