@@ -1,6 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
 
+
+// const API_BASE = 'https://redaction-ai.onrender.com';
+
 function App() {
   const [texto, setTexto] = useState("");
   const [resultado, setResultado] = useState("");
