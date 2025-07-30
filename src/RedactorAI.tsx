@@ -6,6 +6,8 @@ function RedactorAI() {
     const [textoOriginal, setTextoOriginal] = useState('');
     const [textoReescrito, setTextoReescrito] = useState('');
     const [textoIngles, setTextoIngles] = useState('');
+    const [titles, setTitles] = useState('');
+    const [titles_en, setTitlesEn] = useState('');
     // const [imagenUrl, setImagenUrl] = useState('');
     const [loading, setLoading] = useState(false);
 
@@ -13,6 +15,7 @@ function RedactorAI() {
         setLoading(true);
         setTextoOriginal("");
         setTextoReescrito("")// Resetea el texto
+        setTextoIngles("");
         setTimeout(() => setLoading(false), 500); // Simulación de tiempo de espera
     };
 
@@ -28,6 +31,8 @@ function RedactorAI() {
             });
             const data1 = await res1.json();
             const reescrito = data1.resultado;
+            const titles = data1.titulos;
+            setTitles(titles);
             setTextoReescrito(reescrito);
 
             // 2. Traducir
@@ -38,6 +43,8 @@ function RedactorAI() {
             });
             const data2 = await res2.json();
             const enIngles = data2.resultado;
+            const titles_en = data2.titles_en;
+            setTitlesEn(titles_en);
             setTextoIngles(enIngles);
 
             // 3. Crear imagen
@@ -61,7 +68,7 @@ function RedactorAI() {
         <>
             <h1 className='text-center p-8'>Redactor con Inteligencia Artificial</h1>
 
-            <div className="p-4 mx-auto">
+            <div className="p-4 mx-auto max-w-3xl">
                 <textarea
                     value={textoOriginal}
                     onChange={(e) => setTextoOriginal(e.target.value)}
@@ -104,19 +111,45 @@ function RedactorAI() {
 
             <div className='flex gap-5 w-3/4 mx-auto p-5'>
 
-                {textoReescrito && (
-                    <div className="mt-4 border p-4 rounded-lg bg-gray-100">
-                        <h2 className="font-bold text-center text-lg mb-5">Artículo reescrito:</h2>
-                        <p>{textoReescrito}</p>
-                    </div>
-                )}
+                <div className='flex flex-col gap-5 w-full'>
+                    {titles && (
+                        <div className="mt-4 border p-4 rounded-lg bg-gray-100">
+                            <h2 className="font-bold text-center text-lg mb-5">Títulos sugeridos:</h2>
+                            <ol className="pl-5">
+                                {titles.split('\n').map((title, index) => (
+                                    <li key={index} className="mb-2">{title}</li>
+                                ))}
+                            </ol>
+                        </div>
+                    )}
 
-                {textoIngles && (
-                    <div className="mt-4 border p-4 rounded-lg bg-gray-100">
-                        <h2 className="font-bold text-center text-lg mb-5">Traducción en inglés:</h2>
-                        <p>{textoIngles}</p>
-                    </div>
-                )}
+                    {textoReescrito && (
+                        <div className="mt-4 border p-4 rounded-lg bg-gray-100">
+                            <h2 className="font-bold text-center text-lg mb-5">Artículo reescrito:</h2>
+                            <p>{textoReescrito}</p>
+                        </div>
+                    )}
+                </div>
+
+                <div className='flex flex-col gap-5 w-full'>
+                    {titles_en && (
+                        <div className="mt-4 border p-4 rounded-lg bg-gray-100">
+                            <h2 className="font-bold text-center text-lg mb-5">Titulos en Ingles:</h2>
+                            <ul className="pl-5">
+                                {titles_en.split('\n').map((title_en, index) => (
+                                    <li key={index} className="mb-2">{title_en}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+
+                    {textoIngles && (
+                        <div className="mt-4 border p-4 rounded-lg bg-gray-100">
+                            <h2 className="font-bold text-center text-lg mb-5">Traducción en inglés:</h2>
+                            <p>{textoIngles}</p>
+                        </div>
+                    )}
+                </div>
 
             </div>
 
