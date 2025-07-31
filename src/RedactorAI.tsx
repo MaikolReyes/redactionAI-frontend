@@ -3,18 +3,24 @@ import { useState } from 'react';
 const API_BASE = 'https://redaction-ai.onrender.com';
 
 function RedactorAI() {
+
+    // Reescritura
     const [textoOriginal, setTextoOriginal] = useState('');
-    const [textoReescrito, setTextoReescrito] = useState('');
-    const [textoIngles, setTextoIngles] = useState('');
     const [titles, setTitles] = useState('');
-    const [titles_en, setTitlesEn] = useState('');
     const [resumen, setResumen] = useState('');
+    const [textoReescrito, setTextoReescrito] = useState('');
+    // Traducción
+    const [textoIngles, setTextoIngles] = useState('');
+    const [titles_en, setTitlesEn] = useState('');
     const [resumen_en, setResumenEn] = useState('');
+    ////////////////////////////////////////////////////////////
     // const [imagenUrl, setImagenUrl] = useState('');
-    const [loading, setLoading] = useState(false);
+    // Cargando estados
+    const [loadingReescribir, setLoadingReescribir] = useState(false);
+    const [loadingTraducir, setLoadingTraducir] = useState(false);
 
     const manejarReset = () => {
-        setLoading(true);
+        setLoadingReescribir(true);
         setTextoOriginal("");
         setTextoReescrito("")// Resetea el texto
         setTextoIngles("");
@@ -22,7 +28,7 @@ function RedactorAI() {
         setTitlesEn("");
         setResumen("");
         setResumenEn("");
-        setTimeout(() => setLoading(false), 500); // Simulación de tiempo de espera
+        setTimeout(() => setLoadingReescribir(false), 500); // Simulación de tiempo de espera
     };
 
     const copiarAlPortapapeles = (texto: string) => {
@@ -32,9 +38,34 @@ function RedactorAI() {
             .catch(() => alert("Error al copiar"));
     };
 
-    const manejarTodo = async () => {
-        setLoading(true);
+    const handleTraducir = async () => {
+        setLoadingTraducir(true);
+        try {
+            const res = await fetch(`${API_BASE}/traducir`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    texto: textoReescrito,
+                    titulos: Array.isArray(titles) ? titles.join("\n") : titles,
+                    resumen: resumen,
+                }),
+            });
+            const data = await res.json();
+            const enIngles = data.resultado;
+            const titles_en = data.titles_en;
+            const resumen_en = data.resumen_en;
+            setTitlesEn(titles_en);
+            setResumenEn(resumen_en);
+            setTextoIngles(enIngles);
+        } catch (error) {
+            console.error('Error en la traducción:', error);
+        } finally {
+            setLoadingTraducir(false);
+        }
+    }
 
+    const handleReescribir = async () => {
+        setLoadingReescribir(true);
         try {
             // 1. Reescribir
             const res1 = await fetch(`${API_BASE}/reescribir`, {
@@ -49,40 +80,21 @@ function RedactorAI() {
             setTitles(titles);
             setResumen(resumen);
             setTextoReescrito(reescrito);
-
-            // 2. Traducir
-            const res2 = await fetch(`${API_BASE}/traducir`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    texto: reescrito,
-                    titulos: Array.isArray(titles) ? titles.join("\n") : titles,
-                    resumen: resumen,
-                }),
-            });
-            const data2 = await res2.json();
-            const enIngles = data2.resultado;
-            const titles_en = data2.titles_en;
-            const resumen_en = data2.resumen_en;
-            setTitlesEn(titles_en);
-            setResumenEn(resumen_en);
-            setTextoIngles(enIngles);
-
-            // 3. Crear imagen
-            // const res3 = await fetch(`${API_BASE}/create-image`, {
-            //     method: 'POST',
-            //     headers: { 'Content-Type': 'application/json' },
-            //     body: JSON.stringify({ prompt: enIngles }),
-            // });
-            // const data3 = await res3.json();
-            // setImagenUrl(data3.imagen);
-
         } catch (error) {
             console.error('Error en el proceso:', error);
         } finally {
-            setLoading(false);
+            setLoadingReescribir(false);
         }
     };
+
+    // 3. Crear imagen
+    // const res3 = await fetch(`${API_BASE}/create-image`, {
+    //     method: 'POST',
+    //     headers: { 'Content-Type': 'application/json' },
+    //     body: JSON.stringify({ prompt: enIngles }),
+    // });
+    // const data3 = await res3.json();
+    // setImagenUrl(data3.imagen);
 
     return (
 
@@ -100,23 +112,30 @@ function RedactorAI() {
                 <div className='flex gap-5 justify-center'>
 
                     <button
-                        onClick={manejarTodo}
-                        disabled={loading}
+                        onClick={handleReescribir}
+                        disabled={loadingReescribir}
                         className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-800"
                     >
-                        {loading ? 'Procesando...' : 'Reescribir y Traducir'}
+                        {loadingReescribir ? 'Procesando...' : 'Reescribir Artículo'}
                     </button>
 
                     <button
-                        disabled={loading}
-                        className={`px-4 py-2 rounded hover:bg-gray-700 ${loading
+                        onClick={handleTraducir}
+                        disabled={loadingTraducir}
+                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-800"
+                    >
+                        {loadingTraducir ? 'Procesando...' : 'Traducir al Inglés'}
+                    </button>
+
+                    <button
+                        disabled={loadingReescribir}
+                        className={`px-4 py-2 rounded hover:bg-gray-700 ${loadingReescribir
                             ? "bg-gray-500 cursor-not-allowed"
                             : "bg-dark text-white"
                             }`}
                         onClick={manejarReset}>
                         Reset
                     </button>
-
                 </div>
 
             </div>
