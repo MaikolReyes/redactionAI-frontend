@@ -13,11 +13,16 @@ function RedactorAI() {
     const [textoIngles, setTextoIngles] = useState('');
     const [titles_en, setTitlesEn] = useState('');
     const [resumen_en, setResumenEn] = useState('');
-    ////////////////////////////////////////////////////////////
+    // Resumir para Redes Sociales
+    const [resumen_ig, setResumenIG] = useState('');
+    const [resumen_twitter, setResumenTwitter] = useState('');
     // const [imagenUrl, setImagenUrl] = useState('');
     // Cargando estados
     const [loadingReescribir, setLoadingReescribir] = useState(false);
     const [loadingTraducir, setLoadingTraducir] = useState(false);
+    const [loadingResumenIG, setLoadingResumenIG] = useState(false);
+    const [loadingResumenTwitter, setLoadingResumenTwitter] = useState(false);
+
 
     const manejarReset = () => {
         setLoadingReescribir(true);
@@ -26,6 +31,8 @@ function RedactorAI() {
         setTextoIngles("");
         setTitles("");
         setTitlesEn("");
+        setResumenIG("")
+        setResumenTwitter("")
         setResumen("");
         setResumenEn("");
         setTimeout(() => setLoadingReescribir(false), 500); // Simulación de tiempo de espera
@@ -36,6 +43,29 @@ function RedactorAI() {
         navigator.clipboard.writeText(texto)
             .then(() => alert("Texto copiado!"))
             .catch(() => alert("Error al copiar"));
+    };
+
+    const handleReescribir = async () => {
+        setLoadingReescribir(true);
+        try {
+            // 1. Reescribir
+            const res1 = await fetch(`${API_BASE}/reescribir`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ texto: textoOriginal }),
+            });
+            const data1 = await res1.json();
+            const titles = data1.titulos;
+            const resumen = data1.resumen;
+            const reescrito = data1.resultado;
+            setTitles(titles);
+            setResumen(resumen);
+            setTextoReescrito(reescrito);
+        } catch (error) {
+            console.error('Error en el proceso:', error);
+        } finally {
+            setLoadingReescribir(false);
+        }
     };
 
     const handleTraducir = async () => {
@@ -64,29 +94,47 @@ function RedactorAI() {
         }
     }
 
-    const handleReescribir = async () => {
-        setLoadingReescribir(true);
+    const handleResumeIG = async () => {
+        setLoadingResumenIG(true);
         try {
-            // 1. Reescribir
-            const res1 = await fetch(`${API_BASE}/reescribir`, {
+            const res = await fetch(`${API_BASE}/resumeIG`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ texto: textoOriginal }),
+                body: JSON.stringify({
+                    texto: textoOriginal,
+                }),
             });
-            const data1 = await res1.json();
-            const titles = data1.titulos;
-            const resumen = data1.resumen;
-            const reescrito = data1.resultado;
-            setTitles(titles);
-            setResumen(resumen);
-            setTextoReescrito(reescrito);
-        } catch (error) {
-            console.error('Error en el proceso:', error);
-        } finally {
-            setLoadingReescribir(false);
-        }
-    };
+            const data = await res.json();
+            const resumen_ig = data.resume_ig;
+            setResumenIG(resumen_ig)
 
+        } catch (error) {
+            console.error('Error en la traducción:', error);
+        } finally {
+            setLoadingResumenIG(false);
+        }
+    }
+
+    const handleResumeTwitter = async () => {
+        setLoadingResumenTwitter(true);
+        try {
+            const res = await fetch(`${API_BASE}/resumeTwitter`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    texto: textoOriginal,
+                }),
+            });
+            const data = await res.json()
+            const resumen_twitter = data.resume_twitter;
+            setResumenTwitter(resumen_twitter)
+
+        } catch (error) {
+            console.error('Error en la traducción:', error);
+        } finally {
+            setLoadingResumenTwitter(false);
+        }
+    }
     // 3. Crear imagen
     // const res3 = await fetch(`${API_BASE}/create-image`, {
     //     method: 'POST',
@@ -125,6 +173,22 @@ function RedactorAI() {
                         className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-800"
                     >
                         {loadingTraducir ? 'Procesando...' : 'Traducir al Inglés'}
+                    </button>
+
+                    <button
+                        onClick={handleResumeIG}
+                        disabled={loadingResumenIG}
+                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-800"
+                    >
+                        {loadingResumenIG ? 'Procesando...' : 'Resumen para Instagram'}
+                    </button>
+
+                    <button
+                        onClick={handleResumeTwitter}
+                        disabled={loadingResumenTwitter}
+                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-800"
+                    >
+                        {loadingResumenTwitter ? 'Procesando...' : 'Resumen para Twitter'}
                     </button>
 
                     <button
@@ -245,9 +309,48 @@ function RedactorAI() {
                             </div>
                         </div>
                     )}
+
                 </div>
 
-            </div>
+                <div className='flex flex-col gap-5 w-full'>
+
+                    {resumen_ig && (
+                        <div className="mt-4 border p-4 rounded-lg bg-gray-100">
+                            <h2 className="font-bold text-center text-lg mb-5">Artículo para Instagram:</h2>
+                            <p>{resumen_ig}</p>
+                            <div className='text-center'>
+                                <button
+                                    onClick={() => copiarAlPortapapeles(resumen_ig)}
+                                    className="mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                                >
+                                    Copiar texto
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
+                    {resumen_twitter && (
+                        <div className="mt-4 border p-4 rounded-lg bg-gray-100">
+                            <h2 className="font-bold text-center text-lg mb-5">Artículo para Twitter:</h2>
+                            <ul>
+                                {resumen_twitter.split(/(\d️⃣)/).map((resumen_x, index) => (
+                                    <li key={index} className="mb-2">{resumen_x}</li>
+                                ))}
+
+                            </ul>
+                            <div className='text-center'>
+                                <button
+                                    onClick={() => copiarAlPortapapeles(resumen_twitter)}
+                                    className="mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                                >
+                                    Copiar texto
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                </div>
+
+            </div >
 
         </>
     );
