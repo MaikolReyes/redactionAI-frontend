@@ -3,7 +3,6 @@ import { useState } from 'react';
 const API_BASE = 'https://redaction-ai.onrender.com';
 
 function RedactorAI() {
-
     // Reescritura
     const [textoOriginal, setTextoOriginal] = useState('');
     const [titles, setTitles] = useState('');
