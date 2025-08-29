@@ -214,143 +214,147 @@ function RedactorAI() {
 
             <div className='flex gap-5 w-3/4 mx-auto p-5'>
 
-                <div className='flex flex-col gap-5 w-full'>
-                    {titles && (
-                        <div className="mt-4 border p-4 rounded-lg bg-gray-100">
-                            <h2 className="font-bold text-center text-lg mb-5">Títulos en Español:</h2>
-                            <ol className="pl-5">
-                                {titles.split('\n').map((title, index) => (
-                                    <li key={index} className="mb-2 border-2 border-gray-600 rounded p-2">{title}</li>
-                                ))}
-                            </ol>
-                        </div>
-                    )}
-
-                    {resumen && (
-                        <div className="mt-4 border p-4 rounded-lg bg-gray-100">
-                            <h2 className="font-bold text-center text-lg mb-5">Resumen en Español:</h2>
-                            <ul className='pl-5'>
-                                {resumen.split('\n').map((resumen, index) => (
-                                    <li key={index} className="mb-2 list-disc">{resumen}</li>
-                                ))}
-                            </ul>
-                            <div className='text-center'>
-                                <button
-                                    onClick={() => copiarAlPortapapeles(resumen)}
-                                    className="mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                                >
-                                    Copiar resumen
-                                </button>
+                {(titles || resumen || textoReescrito) && (
+                    <div className='flex flex-col gap-5 w-full'>
+                        {titles && (
+                            <div className="mt-4 border p-4 rounded-lg bg-gray-100">
+                                <h2 className="font-bold text-center text-lg mb-5">Títulos en Español:</h2>
+                                <ol className="pl-5">
+                                    {titles.split('\n').map((title, index) => (
+                                        <li key={index} className="mb-2 border-2 border-gray-600 rounded p-2">{title}</li>
+                                    ))}
+                                </ol>
                             </div>
+                        )}
 
-                        </div>
-                    )}
+                        {resumen && (
+                            <div className="mt-4 border p-4 rounded-lg bg-gray-100">
+                                <h2 className="font-bold text-center text-lg mb-5">Resumen en Español:</h2>
+                                <ul className='pl-5'>
+                                    {resumen.split('\n').map((resumen, index) => (
+                                        <li key={index} className="mb-2 list-disc">{resumen}</li>
+                                    ))}
+                                </ul>
+                                <div className='text-center'>
+                                    <button
+                                        onClick={() => copiarAlPortapapeles(resumen)}
+                                        className="mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                                    >
+                                        Copiar resumen
+                                    </button>
+                                </div>
 
-                    {textoReescrito && (
-                        <div className="mt-4 border p-4 rounded-lg bg-gray-100">
-                            <h2 className="font-bold text-center text-lg mb-5">Artículo en Español:</h2>
-                            <p>{textoReescrito}</p>
-                            <div className="text-center">
-                                <button
-                                    onClick={() => copiarAlPortapapeles(textoReescrito)}
-                                    className="mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                                >
-                                    Copiar texto
-                                </button>
                             </div>
-                        </div>
-                    )}
-                </div>
+                        )}
 
-                <div className='flex flex-col gap-5 w-full'>
-                    {titles_en && (
-                        <div className="mt-4 border p-4 rounded-lg bg-gray-100">
-                            <h2 className="font-bold text-center text-lg mb-5">Titulos en Ingles:</h2>
-                            <ul className="pl-5">
-                                {titles_en.split('\n').map((title_en, index) => (
-                                    <li key={index} className="mb-2 border-2 border-gray-600 rounded p-2">{title_en}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
-
-                    {resumen_en && (
-                        <div className="mt-4 border p-4 rounded-lg bg-gray-100">
-                            <h2 className="font-bold text-center text-lg mb-5">Resumen en inglés:</h2>
-                            <ul className='pl-5'>
-                                {resumen_en.split('\n').map((resumen_en, index) => (
-                                    <li key={index} className="mb-2 list-disc">{resumen_en}</li>
-                                ))}
-                            </ul>
-
-                            <div className='text-center'>
-                                <button
-                                    onClick={() => copiarAlPortapapeles(resumen_en)}
-                                    className="mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                                >
-                                    Copiar resumen
-                                </button>
+                        {textoReescrito && (
+                            <div className="mt-4 border p-4 rounded-lg bg-gray-100">
+                                <h2 className="font-bold text-center text-lg mb-5">Artículo en Español:</h2>
+                                <p>{textoReescrito}</p>
+                                <div className="text-center">
+                                    <button
+                                        onClick={() => copiarAlPortapapeles(textoReescrito)}
+                                        className="mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                                    >
+                                        Copiar texto
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    )}
+                        )}
+                    </div>
+                )}
 
-                    {textoIngles && (
-                        <div className="mt-4 border p-4 rounded-lg bg-gray-100">
-                            <h2 className="font-bold text-center text-lg mb-5">Artículo en inglés:</h2>
-                            <p>{textoIngles}</p>
-                            <div className='text-center'>
-                                <button
-                                    onClick={() => copiarAlPortapapeles(textoIngles)}
-                                    className="mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                                >
-                                    Copiar texto
-                                </button>
+
+                {(titles_en || resumen_en || textoIngles) && (
+                    <div className='flex flex-col gap-5 w-full'>
+                        {titles_en && (
+                            <div className="mt-4 border p-4 rounded-lg bg-gray-100">
+                                <h2 className="font-bold text-center text-lg mb-5">Titulos en Ingles:</h2>
+                                <ul className="pl-5">
+                                    {titles_en.split('\n').map((title_en, index) => (
+                                        <li key={index} className="mb-2 border-2 border-gray-600 rounded p-2">{title_en}</li>
+                                    ))}
+                                </ul>
                             </div>
-                        </div>
-                    )}
+                        )}
 
-                </div>
+                        {resumen_en && (
+                            <div className="mt-4 border p-4 rounded-lg bg-gray-100">
+                                <h2 className="font-bold text-center text-lg mb-5">Resumen en inglés:</h2>
+                                <ul className='pl-5'>
+                                    {resumen_en.split('\n').map((resumen_en, index) => (
+                                        <li key={index} className="mb-2 list-disc">{resumen_en}</li>
+                                    ))}
+                                </ul>
 
-                <div className='flex flex-col gap-5 w-full'>
-
-                    {resumen_ig && (
-                        <div className="mt-4 border p-4 rounded-lg bg-gray-100">
-                            <h2 className="font-bold text-center text-lg mb-5">Artículo para Instagram:</h2>
-                            <p>{resumen_ig}</p>
-                            <div className='text-center'>
-                                <button
-                                    onClick={() => copiarAlPortapapeles(resumen_ig)}
-                                    className="mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                                >
-                                    Copiar texto
-                                </button>
+                                <div className='text-center'>
+                                    <button
+                                        onClick={() => copiarAlPortapapeles(resumen_en)}
+                                        className="mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                                    >
+                                        Copiar resumen
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    )}
+                        )}
 
-                    {resumen_twitter && (
-                        <div className="mt-4 border p-4 rounded-lg bg-gray-100">
-                            <h2 className="font-bold text-center text-lg mb-5">Artículo para Twitter:</h2>
-                            <ul>
-                                {resumen_twitter.split(/(\d️⃣)/).map((resumen_x, index) => (
-                                    <li key={index} className="mb-2">{resumen_x}</li>
-                                ))}
-
-                            </ul>
-                            <div className='text-center'>
-                                <button
-                                    onClick={() => copiarAlPortapapeles(resumen_twitter)}
-                                    className="mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                                >
-                                    Copiar texto
-                                </button>
+                        {textoIngles && (
+                            <div className="mt-4 border p-4 rounded-lg bg-gray-100">
+                                <h2 className="font-bold text-center text-lg mb-5">Artículo en inglés:</h2>
+                                <p>{textoIngles}</p>
+                                <div className='text-center'>
+                                    <button
+                                        onClick={() => copiarAlPortapapeles(textoIngles)}
+                                        className="mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                                    >
+                                        Copiar texto
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    )}
-                </div>
+                        )}
 
+                    </div>
+                )}
+
+                {(resumen_ig || resumen_twitter) && (
+                    <div className='flex flex-col gap-5 w-full'>
+                        {resumen_ig && (
+                            <div className="mt-4 border p-4 rounded-lg bg-gray-100">
+                                <h2 className="font-bold text-center text-lg mb-5">Artículo para Instagram:</h2>
+                                <p>{resumen_ig}</p>
+                                <div className='text-center'>
+                                    <button
+                                        onClick={() => copiarAlPortapapeles(resumen_ig)}
+                                        className="mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                                    >
+                                        Copiar texto
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
+                        {resumen_twitter && (
+                            <div className="mt-4 border p-4 rounded-lg bg-gray-100">
+                                <h2 className="font-bold text-center text-lg mb-5">Artículo para Twitter:</h2>
+                                <ul>
+                                    {resumen_twitter.split(/(\d️⃣)/).map((resumen_x, index) => (
+                                        <li key={index} className="mb-2">{resumen_x}</li>
+                                    ))}
+
+                                </ul>
+                                <div className='text-center'>
+                                    <button
+                                        onClick={() => copiarAlPortapapeles(resumen_twitter)}
+                                        className="mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                                    >
+                                        Copiar texto
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                )}
             </div >
-
         </>
     );
 }
